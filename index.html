@@ -177,6 +177,10 @@
 <div id="timer-wrap">
   <div id="timer-label">Activity time remaining</div>
   <div id="timer-display">0:00</div>
+  <div style="margin-top:.4rem;display:flex;gap:.4rem;justify-content:center">
+    <button id="timer-pause-btn" onclick="togglePause()" style="background:var(--gold);color:white;border:none;border-radius:4px;padding:.25rem .7rem;cursor:pointer;font-size:.8rem">Pause</button>
+    <button onclick="resetTimer()" style="background:#888;color:white;border:none;border-radius:4px;padding:.25rem .7rem;cursor:pointer;font-size:.8rem">Reset</button>
+  </div>
   <button id="timer-advance" onclick="advanceSlide()">Continue →</button>
 </div>
 
@@ -264,8 +268,8 @@
   </section>
 
   <!-- SLIDE 4: Warm-up / Notebook -->
-  <section data-timer="120">
-    <h1>Warm-Up: Open Your Field Notebook <span style="font-size:.9rem;color:var(--gold)">⏱ 2 min</span></h1>
+  <section data-timer="300">
+    <h1>Warm-Up: Open Your Field Notebook <span style="font-size:.9rem;color:var(--gold)">⏱ 5 min</span></h1>
     <div class="cols">
       <div>
         <p>Every entry uses this structure. Be consistent — we'll compile these after the workshop.</p>
@@ -294,8 +298,8 @@
   </section>
 
   <!-- SLIDE 5: Step 1 -->
-  <section data-timer="300">
-    <h1>Step 1: Identify Opportunities <span style="font-size:.9rem;color:var(--gold)">⏱ 5 min</span></h1>
+  <section data-timer="900">
+    <h1>Step 1: Identify Opportunities <span style="font-size:.9rem;color:var(--gold)">⏱ 15 min</span></h1>
     <p style="margin-bottom:.8rem"><strong>Prompt:</strong> What financial wellness challenges and opportunities do TXST students face? Brainstorm freely — write each idea as its own notebook entry.</p>
     <div class="cols3">
       <div class="card">
@@ -354,8 +358,8 @@
   </section>
 
   <!-- SLIDE 6: Step 2 -->
-  <section data-timer="180">
-    <h1>Step 2: Map to Student Populations <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+  <section data-timer="600">
+    <h1>Step 2: Map to Student Populations <span style="font-size:.9rem;color:var(--gold)">⏱ 10 min</span></h1>
     <p>Take your top 3 ideas and map them. Who needs this most? When in their journey?</p>
     <table style="width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.85rem">
       <thead>
@@ -378,8 +382,8 @@
   </section>
 
   <!-- SLIDE 7: Step 3 -->
-  <section data-timer="180">
-    <h1>Step 3: Choose Delivery Methods <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+  <section data-timer="600">
+    <h1>Step 3: Choose Delivery Methods <span style="font-size:.9rem;color:var(--gold)">⏱ 10 min</span></h1>
     <p>For each idea, how does it reach students? Pick the best fit — or combine.</p>
     <div class="cols">
       <div>
@@ -414,8 +418,8 @@
   </section>
 
   <!-- SLIDE 8: Step 4 -->
-  <section data-timer="180">
-    <h1>Step 4: Connect to AFCPE MME1 <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+  <section data-timer="600">
+    <h1>Step 4: Connect to AFCPE MME1 <span style="font-size:.9rem;color:var(--gold)">⏱ 10 min</span></h1>
     <p>Every program we design should map to at least one MME1 competency. This keeps our work evidence-based and credentialed.</p>
     <div class="cols">
       <div>
@@ -479,8 +483,8 @@
   </section>
 
   <!-- SLIDE 10: Next Steps -->
-  <section data-timer="120">
-    <h1>Next Steps & Summer Timeline <span style="font-size:.9rem;color:var(--gold)">⏱ 2 min</span></h1>
+  <section data-timer="600">
+    <h1>Next Steps & Summer Timeline <span style="font-size:.9rem;color:var(--gold)">⏱ 10 min</span></h1>
     <div class="cols">
       <div>
         <h3>From today</h3>
@@ -520,7 +524,7 @@
       <p style="text-align:center;color:var(--warm);font-size:1.1rem">Full academic year · All teams · Weekly view</p>
       <div style="margin-top:1.5rem">
         <span class="tag">AE Operations</span>
-        <span class="tag gold">B3</span>
+        <span class="tag gold">Academic Engagement</span>
         <span class="tag">FirstGen</span>
         <span class="tag">Handraise</span>
         <span class="tag gold">Financial Education</span>
@@ -538,7 +542,7 @@
       <table class="cal-table">
         <thead>
           <tr>
-            <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Assessment</th><th>B3</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>DSS</th>
+            <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Assessment</th><th>Acad. Engagement</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>DSS</th>
           </tr>
         </thead>
         <tbody id="calBody"></tbody>
@@ -559,7 +563,7 @@
         <div class="form-row"><label>Week #</label><input type="number" id="f-week" min="1" max="5" placeholder="1–5"/></div>
         <div class="form-row"><label>Team</label>
           <select id="f-team">
-            <option>AE Operations</option><option>B3 Operations</option><option>FirstGen Operations</option><option>Handraise Operations</option><option>Financial Education Operations</option><option>Peer Navigator Operations</option><option>Assessment Team</option><option>DSS Operations</option>
+            <option>AE Operations</option><option>Academic Engagement Operations</option><option>FirstGen Operations</option><option>Handraise Operations</option><option>Financial Education Operations</option><option>Peer Navigator Operations</option><option>Assessment Team</option><option>DSS Operations</option>
           </select>
         </div>
         <div class="form-row"><label>Activity</label><input type="text" id="f-activity" placeholder="Describe the activity"/></div>
@@ -587,32 +591,63 @@ Reveal.initialize({ controls:true, progress:true, slideNumber:true, history:true
 // ── TIMER ──────────────────────────────────────────────────────────
 let timerInterval = null;
 let timerAllowAdvance = false;
+let timerPaused = false;
+let timerRemaining = 0;
+let timerOriginal = 0;
 
 function startTimer(seconds) {
   clearInterval(timerInterval);
   if (!seconds || seconds <= 0) { document.getElementById('timer-wrap').style.display='none'; return; }
+  timerOriginal = seconds;
+  timerRemaining = seconds;
+  timerPaused = false;
   const wrap = document.getElementById('timer-wrap');
   const display = document.getElementById('timer-display');
   const btn = document.getElementById('timer-advance');
+  const pauseBtn = document.getElementById('timer-pause-btn');
   wrap.style.display = 'block';
   btn.style.display = 'none';
+  pauseBtn.textContent = 'Pause';
   timerAllowAdvance = false;
-  let remaining = seconds;
   function tick() {
-    const m = Math.floor(remaining/60);
-    const s = remaining % 60;
+    if (timerPaused) return;
+    const m = Math.floor(timerRemaining/60);
+    const s = timerRemaining % 60;
     display.textContent = m + ':' + String(s).padStart(2,'0');
-    if (remaining <= 0) {
+    if (timerRemaining <= 0) {
       clearInterval(timerInterval);
       display.textContent = 'Done!';
       display.style.color = 'var(--gold)';
       btn.style.display = 'inline-block';
       timerAllowAdvance = true;
+      return;
     }
-    remaining--;
+    timerRemaining--;
   }
   tick();
   timerInterval = setInterval(tick, 1000);
+}
+
+function togglePause() {
+  const btn = document.getElementById('timer-pause-btn');
+  if (timerPaused) {
+    timerPaused = false;
+    btn.textContent = 'Pause';
+    btn.style.background = 'var(--gold)';
+  } else {
+    timerPaused = true;
+    btn.textContent = 'Resume';
+    btn.style.background = 'var(--maroon)';
+  }
+}
+
+function resetTimer() {
+  timerPaused = false;
+  document.getElementById('timer-pause-btn').textContent = 'Pause';
+  document.getElementById('timer-pause-btn').style.background = 'var(--gold)';
+  document.getElementById('timer-advance').style.display = 'none';
+  document.getElementById('timer-display').style.color = 'var(--maroon)';
+  startTimer(timerOriginal);
 }
 
 function advanceSlide() {
@@ -720,7 +755,7 @@ function renderCalendar() {
 }
 
 function teamKey(team) {
-  const map = {'AE Operations':'ae','B3 Operations':'b3','FirstGen Operations':'fg','Handraise Operations':'hr','Financial Education Operations':'fin','Peer Navigator Operations':'pn','Assessment Team':'asmnt','DSS Operations':'dss'};
+  const map = {'AE Operations':'ae','Academic Engagement Operations':'b3','FirstGen Operations':'fg','Handraise Operations':'hr','Financial Education Operations':'fin','Peer Navigator Operations':'pn','Assessment Team':'asmnt','DSS Operations':'dss'};
   return map[team]||null;
 }
 
@@ -750,7 +785,7 @@ function exportCSV() {
     });
     return r;
   });
-  const header = ['Week','Month','University Calendar','AE Operations','Assessment','B3 Operations','FirstGen Operations','Handraise','Financial Education','Peer Navigator','DSS'];
+  const header = ['Week','Month','University Calendar','AE Operations','Assessment','Academic Engagement Operations','FirstGen Operations','Handraise','Financial Education','Peer Navigator','DSS'];
   const rows = merged.map(function(r){ return [r.w,r.m,r.uni,r.ae,r.asmnt,r.b3,r.fg,r.hr,r.fin,r.pn,r.dss].map(function(v){ return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(','); });
   const csv = header.join(',')+'\n'+rows.join('\n');
   const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});

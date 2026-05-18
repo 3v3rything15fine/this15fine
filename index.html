@@ -532,7 +532,7 @@
           <div id="qr-placeholder" style="width:140px;height:140px;background:white;border:2px solid var(--maroon);display:flex;align-items:center;justify-content:center;border-radius:6px">
             <canvas id="qr-canvas"></canvas>
           </div>
-          <p style="font-size:.75rem;color:var(--warm);margin:.4rem 0 0">submit.this15fine.dev</p>
+          <p style="font-size:.75rem;color:var(--warm);margin:.4rem 0 0">this15fine.dev/submit.html</p>
         </div>
         <div style="text-align:left;max-width:300px">
           <h3 style="margin-top:0">How to use</h3>
@@ -596,7 +596,7 @@
         <div style="margin-top:1.5rem">
           <h3>Submit form</h3>
           <p style="font-size:.85rem">Share this link or QR with participants:</p>
-          <code style="background:#eee;padding:4px 8px;border-radius:4px;font-size:.85rem">submit.this15fine.dev</code>
+          <code style="background:#eee;padding:4px 8px;border-radius:4px;font-size:.85rem">this15fine.dev/submit.html</code>
         </div>
       </div>
     </div>
@@ -848,7 +848,7 @@ function renderQR() {
   canvas.width=130;canvas.height=130;
   const img=new Image();img.crossOrigin='anonymous';
   img.onload=function(){canvas.getContext('2d').drawImage(img,0,0,130,130);};
-  img.src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https://submit.this15fine.dev';
+  img.src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https://this15fine.dev/submit.html';
 }
 Reveal.on('slidechanged',function(e){
   const idx=e.indexh;

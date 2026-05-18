@@ -1,189 +1,765 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>TXST Financial Wellness Ideation - Web Deck</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css" />
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/black.css" id="theme" />
+  <meta charset="utf-8"/>
+  <title>Financial Wellness Ideation — TXST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/reveal.css"/>
   <style>
-    :root{
-      --txst-maroon:#501214;
-      --txst-gold:#8d734a;
-      --txst-cream:#f5f0e8;
-      --txst-warm:#8a8d8f;
+    :root {
+      --maroon: #501214;
+      --gold:   #8d734a;
+      --cream:  #f5f0e8;
+      --warm:   #8a8d8f;
+      --dark:   #2a1a1b;
     }
-    html, body { height: 100%; }
-    body { background: var(--txst-cream); color: #222; font-family: Arial, Helvetica, sans-serif; }
+    html, body { height: 100%; margin: 0; }
+    body { background: var(--cream); font-family: Arial, Helvetica, sans-serif; }
     .reveal { height: 100vh; }
-    h1, h2 { color: var(--txst-maroon); }
-    .txst-heading { color: var(--txst-maroon); font-weight: 800; }
-    .accent { color: var(--txst-gold); }
-    .notebook { border: 2px dashed #bbb; height: 240px; display: flex; align-items: center; justify-content: center; color: #666; }
-    #opsCalendar { border-collapse: collapse; width: 100%; }
-    #opsCalendar th, #opsCalendar td { border: 1px solid #bbb; padding: 6px 8px; }
-    #opsCalendar th { background: #f4f4f4; text-align: left; }
-    .np { padding-left: 12px; }
-    @media (max-width: 700px){ .notebook { height: 180px; } }
-    .timer-bar{ height: 6px; background: var(--txst-maroon); width: 0; transition: width 0.3s; }
+    .reveal .slides section {
+      background: var(--cream);
+      color: #222;
+      text-align: left;
+      padding: 2rem 3rem;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .reveal h1 {
+      color: var(--maroon);
+      font-size: 2.2rem;
+      border-bottom: 4px solid var(--gold);
+      padding-bottom: .4rem;
+      margin-bottom: 1rem;
+      text-transform: none;
+    }
+    .reveal h2 {
+      color: var(--maroon);
+      font-size: 1.7rem;
+      border-left: 6px solid var(--gold);
+      padding-left: .6rem;
+      margin-bottom: .8rem;
+      text-transform: none;
+    }
+    .reveal h3 { color: var(--gold); font-size: 1.2rem; margin: .4rem 0; text-transform: none; }
+    .reveal p, .reveal li { font-size: 1.05rem; line-height: 1.6; color: #222; }
+    .reveal ul { margin-left: 1.2rem; }
+    .reveal ul li { margin-bottom: .4rem; }
+    .reveal strong { color: var(--maroon); }
+    .tag {
+      display: inline-block;
+      background: var(--maroon);
+      color: var(--cream);
+      border-radius: 4px;
+      padding: 2px 10px;
+      font-size: .85rem;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+    .tag.gold { background: var(--gold); }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      border-top: 4px solid var(--gold);
+    }
+    .notebook-mock {
+      border: 2px solid #bbb;
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      background: white;
+      font-family: 'Courier New', monospace;
+      font-size: .9rem;
+      line-height: 1.8;
+      color: #333;
+    }
+    .notebook-mock .field { border-bottom: 1px solid #ccc; margin-bottom: .4rem; padding-bottom: .2rem; }
+    .notebook-mock .label { color: var(--maroon); font-weight: bold; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; }
+    .sketch-box {
+      border: 1px dashed #aaa;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-style: italic;
+      font-size: .85rem;
+      margin-top: .4rem;
+    }
+    /* Timer */
+    #timer-wrap {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: none;
+      background: white;
+      border: 2px solid var(--maroon);
+      border-radius: 8px;
+      padding: .5rem 1.4rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+      text-align: center;
+      min-width: 200px;
+    }
+    #timer-display {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--maroon);
+      font-variant-numeric: tabular-nums;
+    }
+    #timer-label { font-size: .8rem; color: var(--warm); margin-bottom: .2rem; }
+    #timer-advance {
+      margin-top: .4rem;
+      background: var(--maroon);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: .3rem 1rem;
+      cursor: pointer;
+      font-size: .85rem;
+      display: none;
+    }
+    #timer-advance:hover { background: var(--gold); }
+    /* Calendar table */
+    .cal-table { width: 100%; border-collapse: collapse; font-size: .7rem; }
+    .cal-table th {
+      background: var(--maroon);
+      color: var(--cream);
+      padding: 4px 6px;
+      text-align: left;
+      font-size: .65rem;
+      white-space: nowrap;
+    }
+    .cal-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: top;
+      font-size: .65rem;
+      line-height: 1.4;
+    }
+    .cal-table tr:nth-child(even) td { background: #faf7f2; }
+    .cal-table tr:hover td { background: #f0e8dc; }
+    .cal-table .month-header td {
+      background: var(--gold);
+      color: white;
+      font-weight: bold;
+      font-size: .7rem;
+    }
+    .cal-wrap { overflow-y: auto; max-height: 72vh; }
+    /* Part 2 form */
+    .form-row { margin-bottom: .7rem; }
+    .form-row label { display: block; font-size: .85rem; color: var(--maroon); font-weight: bold; margin-bottom: .2rem; }
+    .form-row input, .form-row textarea, .form-row select {
+      width: 100%; box-sizing: border-box;
+      border: 1px solid #ccc; border-radius: 4px;
+      padding: .4rem .6rem; font-size: .9rem;
+    }
+    .btn {
+      background: var(--maroon); color: white; border: none;
+      border-radius: 4px; padding: .5rem 1.2rem;
+      cursor: pointer; font-size: .9rem; margin-right: .5rem;
+    }
+    .btn:hover { background: var(--gold); }
+    .btn.secondary { background: var(--gold); }
+    .chip {
+      display: inline-block; background: #eee; border-radius: 12px;
+      padding: 2px 10px; font-size: .78rem; margin: 2px;
+      color: #444;
+    }
   </style>
 </head>
 <body>
-  <div class="reveal">
-    <div class="slides">
-      <!-- Part 1 slides -->
-      <section>
-        <h1 class="txst-heading">Financial Wellness Ideation  Your Summer Project</h1>
-        <p>Texas State University</p>
-        <p class="accent">Bobcats Bounce Back (B3)</p>
-        <div class="timer-bar" id="t1" aria-hidden="true"></div>
-      </section>
-      <section>
-        <h2 class="txst-heading">Workshop Overview & Goal</h2>
-        <ul>
-          <li>Purpose: Collaborative brainstorm to enhance TXST student financial wellness this summer.</li>
-          <li>Methodologies: Design Thinking and Appreciative Inquiry.</li>
-        </ul>
-      </section>
-      <section>
-        <h2 class="txst-heading">Our Ideation Framework: Positive Focus</h2>
-        <p>In the Ideate phase we build on strengths and opportunities. Appreciation Inquiry guides positive inquiry and sustainable solutions.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Your Field Notebook: Capture Ideas</h2>
-        <div class="notebook" aria-label="field notebook placeholder">Notebook entry: Date, Title, Description, Sketch</div>
-      </section>
-      <section>
-        <h2 class="txst-heading">Step 1: Identify Opportunities for Impact</h2>
-        <ul>
-          <li>Financial Literacy & Planning: Budgeting, goal setting</li>
-          <li>Credit & Debt Management: Credit scores, loans</li>
-          <li>Major Financial Decisions: Large purchases, contracts</li>
-          <li>Risk Management: Insurance, emergency funds</li>
-          <li>Long-Term Planning: Investments, retirement</li>
-          <li>Employment & Income: Earnings, taxes</li>
-        </ul>
-      </section>
-      <section>
-        <h2 class="txst-heading">Step 2: Map Ideas to Student Needs</h2>
-        <p>Ideas mapped to years and populations for targeted impact.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Step 3: Delivery Modalities</h2>
-        <ul>
-          <li>1:1 Coaching</li>
-          <li>In-Class Workshops</li>
-          <li>Online Resources</li>
-          <li>Print Materials</li>
-          <li>Campaigns</li>
-          <li>Mobile App Features</li>
-        </ul>
-      </section>
-      <section>
-        <h2 class="txst-heading">Step 4: Connect to AFCPE MME1 Content</h2>
-        <p>Link ideas to glossary/explore terms from AFCPE MME1.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Field Notebook Examples</h2>
-        <p>Uniform entry structures for future sharing.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Next Steps</h2>
-        <p>Recap and plan MVP development for the summer project.</p>
-      </section>
 
-      <!-- Part 2: Operations Calendar MVP -->
-      <section>
-        <h1 class="txst-heading">Operations Calendar MVP</h1>
-        <p>Calendar view to display upcoming activities. Submissions stored locally in MVP.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Calendar</h2>
-        <div id="opsCalendar"></div>
-      </section>
-      <section>
-        <h2 class="txst-heading">Submit New Activity</h2>
-        <form id="activityForm" onsubmit="return false;">
-          <label>Date: <input type="date" id="actDate" required></label><br/>
-          <label>Title: <input type="text" id="actTitle" required></label><br/>
-          <label>Description: <textarea id="actDesc" rows="3"></textarea></label><br/>
-          <button type="button" onclick="addActivity()">Add Activity (local)</button>
-        </form>
-        <p class="note">Submissions are stored locally for MVP. Back-end required for permanent storage/export.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Export to CSV</h2>
-        <button onclick="exportCSV()">Export Calendar to CSV</button>
-        <p class="note">Open in Excel for further editing.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">Deployment</h2>
-        <p>Upload the web deck to this15fine.dev as the sole page by placing index.html at the root of the public directory.</p>
-      </section>
-      <section>
-        <h2 class="txst-heading">MVP Next Steps</h2>
-        <p>Display the MVP calendar, collect submissions, and export data to Excel-friendly formats.</p>
-      </section>
+<!-- Timer overlay -->
+<div id="timer-wrap">
+  <div id="timer-label">Activity time remaining</div>
+  <div id="timer-display">0:00</div>
+  <button id="timer-advance" onclick="advanceSlide()">Continue →</button>
+</div>
+
+<div class="reveal">
+ <div class="slides">
+
+  <!-- SLIDE 1: Title -->
+  <section data-timer="0">
+    <div style="margin-top:3rem">
+      <div style="font-size:.9rem;color:var(--warm);text-transform:uppercase;letter-spacing:2px;margin-bottom:.5rem">Texas State University · Summer 2026</div>
+      <h1 style="font-size:2.8rem;border:none;padding:0">Financial Wellness<br><span style="color:var(--gold)">Ideation Workshop</span></h1>
+      <p style="margin-top:1rem;color:var(--warm)">Academic Engagement · Bobcats Bounce Back (B3)</p>
+      <div style="margin-top:2rem">
+        <span class="tag">Design Thinking</span>
+        <span class="tag gold">Appreciative Inquiry</span>
+        <span class="tag">AFCPE MME1</span>
+      </div>
+      <p style="margin-top:2rem;font-size:.9rem;color:var(--warm)">Use arrow keys or swipe to navigate</p>
     </div>
-  </div>
+  </section>
 
-  <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
-  <script>
-    Reveal.initialize({
-      controls: true,
-      progress: true,
-      slideNumber: true,
-      history: true,
-      center: true,
-      transition: 'none'
+  <!-- SLIDE 2: Overview -->
+  <section data-timer="0">
+    <h1>Workshop Overview & Goal</h1>
+    <div class="cols">
+      <div>
+        <h3>What we're doing today</h3>
+        <ul>
+          <li>Brainstorm ideas for <strong>financial wellness programs</strong> serving TXST students this summer</li>
+          <li>Map ideas to student populations and delivery methods</li>
+          <li>Connect everything to <strong>AFCPE MME1</strong> professional standards</li>
+          <li>Document in field notebooks for future reference</li>
+        </ul>
+      </div>
+      <div>
+        <h3>How we're doing it</h3>
+        <div class="card" style="margin-bottom:.8rem">
+          <strong>Design Thinking</strong>
+          <p style="margin:.3rem 0;font-size:.9rem">Empathize → Define → <strong>Ideate</strong> → Prototype → Test</p>
+        </div>
+        <div class="card">
+          <strong>Appreciative Inquiry</strong>
+          <p style="margin:.3rem 0;font-size:.9rem">Build on what's already working. Focus on strengths and possibilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: Framework -->
+  <section data-timer="0">
+    <h1>Ideation Framework: Positive Focus</h1>
+    <div class="cols">
+      <div>
+        <h3>The Ideate Phase</h3>
+        <ul>
+          <li>Generate <strong>as many ideas as possible</strong> — quantity over quality first</li>
+          <li>No bad ideas at this stage</li>
+          <li>Build on each other's thinking</li>
+          <li>Challenge assumptions about what's possible</li>
+        </ul>
+        <h3 style="margin-top:1rem">Appreciative Inquiry Lens</h3>
+        <ul>
+          <li>Start with <strong>what's working</strong> for students financially</li>
+          <li>Ask: "How do we do <em>more</em> of that?"</li>
+          <li>Strengths-based framing leads to sustainable programs</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card">
+          <strong>AFCPE MME1 Modules we'll draw from:</strong>
+          <ul style="margin-top:.5rem">
+            <li>Set the Stage & Gather Client Info</li>
+            <li>Assist in Creating an Action Plan</li>
+            <li>Personal Financial Planning Tools</li>
+            <li>Manage Money, Taxes & Employment</li>
+            <li>Credit and Debt</li>
+            <li>Major Acquisitions</li>
+            <li>Managing Financial Risks</li>
+            <li>Investment Fundamentals</li>
+            <li>Retirement & Estate Planning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: Warm-up / Notebook -->
+  <section data-timer="120">
+    <h1>Warm-Up: Open Your Field Notebook <span style="font-size:.9rem;color:var(--gold)">⏱ 2 min</span></h1>
+    <div class="cols">
+      <div>
+        <p>Every entry uses this structure. Be consistent — we'll compile these after the workshop.</p>
+        <div class="notebook-mock">
+          <div class="field"><div class="label">Date</div>___________________</div>
+          <div class="field"><div class="label">Idea Title</div>___________________</div>
+          <div class="field"><div class="label">Description</div>
+            <div style="height:40px"></div>
+          </div>
+          <div class="field"><div class="label">Target Population</div>___________________</div>
+          <div class="field"><div class="label">AFCPE Connection</div>___________________</div>
+          <div class="sketch-box">[ sketch / diagram area ]</div>
+        </div>
+      </div>
+      <div>
+        <h3>Warm-up prompt</h3>
+        <p>Think about a student you've worked with who had a financial concern. Write down:</p>
+        <ul>
+          <li>What was the concern?</li>
+          <li>What resource or conversation helped most?</li>
+          <li>What was missing?</li>
+        </ul>
+        <p style="margin-top:1rem;font-size:.9rem;color:var(--warm)">You have 2 minutes. Timer is running below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: Step 1 -->
+  <section data-timer="300">
+    <h1>Step 1: Identify Opportunities <span style="font-size:.9rem;color:var(--gold)">⏱ 5 min</span></h1>
+    <p style="margin-bottom:.8rem"><strong>Prompt:</strong> What financial wellness challenges and opportunities do TXST students face? Brainstorm freely — write each idea as its own notebook entry.</p>
+    <div class="cols3">
+      <div class="card">
+        <h3>Financial Literacy & Planning</h3>
+        <ul>
+          <li>Budgeting & spending plans</li>
+          <li>Goal setting</li>
+          <li>Cash flow statements</li>
+          <li>Emergency funds</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Credit & Debt</h3>
+        <ul>
+          <li>Understanding credit scores</li>
+          <li>Student loan management</li>
+          <li>Buy now, pay later risks</li>
+          <li>Debt repayment strategies</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Income & Employment</h3>
+        <ul>
+          <li>On-campus employment</li>
+          <li>Tax basics for students</li>
+          <li>Benefits & cafeteria plans</li>
+          <li>Post-grad salary negotiation</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Major Decisions</h3>
+        <ul>
+          <li>Housing — rent vs. own</li>
+          <li>Car purchases & financing</li>
+          <li>Technology & big purchases</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Risk & Protection</h3>
+        <ul>
+          <li>Renter's insurance</li>
+          <li>Health insurance (CHIP, COBRA)</li>
+          <li>Identity theft protection</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Long-Term Planning</h3>
+        <ul>
+          <li>Investment basics</li>
+          <li>Compound interest</li>
+          <li>Retirement accounts (Roth IRA)</li>
+          <li>Asset allocation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: Step 2 -->
+  <section data-timer="180">
+    <h1>Step 2: Map to Student Populations <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+    <p>Take your top 3 ideas and map them. Who needs this most? When in their journey?</p>
+    <table style="width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.85rem">
+      <thead>
+        <tr style="background:var(--maroon);color:var(--cream)">
+          <th style="padding:8px">Your Idea</th>
+          <th style="padding:8px">Year(s)</th>
+          <th style="padding:8px">Priority Population</th>
+          <th style="padding:8px">Delivery Timing</th>
+          <th style="padding:8px">Expected Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#faf7f2"><td style="padding:8px;color:#aaa;font-style:italic">e.g. Budgeting workshop</td><td style="padding:8px">Freshman</td><td style="padding:8px">First-gen, Low-income</td><td style="padding:8px">Week 3–4 of term</td><td style="padding:8px">Reduced financial stress, retention</td></tr>
+        <tr><td style="padding:8px;border-top:1px solid #eee" colspan="5"></td></tr>
+        <tr style="background:#faf7f2"><td style="padding:8px;border-top:1px solid #eee" colspan="5"></td></tr>
+        <tr><td style="padding:8px;border-top:1px solid #eee" colspan="5"></td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:.8rem;font-size:.85rem;color:var(--warm)">Priority populations: First-gen · Low-income · Transfer · International · Student parents · Athletes</p>
+  </section>
+
+  <!-- SLIDE 7: Step 3 -->
+  <section data-timer="180">
+    <h1>Step 3: Choose Delivery Methods <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+    <p>For each idea, how does it reach students? Pick the best fit — or combine.</p>
+    <div class="cols">
+      <div>
+        <div class="card" style="margin-bottom:.7rem">
+          <strong>1:1 Coaching Sessions</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">Deep, personalized. Best for complex situations — debt, appeals, emergency funding. Delivered by B3 counselors or AFCPE-trained staff.</p>
+        </div>
+        <div class="card" style="margin-bottom:.7rem">
+          <strong>In-Class / US1100 Presentations</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">Broad reach, early in semester. Peer Navigators already have a foothold here. Great for financial literacy basics.</p>
+        </div>
+        <div class="card">
+          <strong>Peer Mentor Delivery</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">Relatable, trusted. Monthly trainings already on the ops calendar. Works well for budgeting, credit basics.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.7rem">
+          <strong>Workshops (Registration, NSO)</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">High traffic moments. FG and Peer Nav already co-facilitate. Add financial topics at existing touchpoints.</p>
+        </div>
+        <div class="card" style="margin-bottom:.7rem">
+          <strong>Web Resources / Canvas</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">Asynchronous access. B3 already uses Canvas for Journey Launch. Good for glossary terms, calculators, guides.</p>
+        </div>
+        <div class="card">
+          <strong>Print & Campaigns</strong>
+          <p style="font-size:.85rem;margin:.3rem 0">Newsletters (FG already publishes quarterly). Awareness campaigns tied to FAFSA deadlines, registration weeks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: Step 4 -->
+  <section data-timer="180">
+    <h1>Step 4: Connect to AFCPE MME1 <span style="font-size:.9rem;color:var(--gold)">⏱ 3 min</span></h1>
+    <p>Every program we design should map to at least one MME1 competency. This keeps our work evidence-based and credentialed.</p>
+    <div class="cols">
+      <div>
+        <h3>Core Competency Clusters</h3>
+        <ul>
+          <li><strong>Client Intake & Goal Setting</strong> — action plans, ambivalence, behavior change stages</li>
+          <li><strong>Cash Flow & Budgeting</strong> — cash flow statement, budget variance, spending plans</li>
+          <li><strong>Credit & Debt</strong> — credit score, amortization, debt management, collections</li>
+          <li><strong>Money Management</strong> — checking accounts, ATM, compound interest, taxes</li>
+          <li><strong>Major Acquisitions</strong> — auto loans, renter's insurance, collateral</li>
+          <li><strong>Risk Management</strong> — insurance types, COBRA, CHIP</li>
+          <li><strong>Investing & Retirement</strong> — asset allocation, bonds, Roth IRA, annuity</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Quick Mapping Examples</h3>
+        <div class="card" style="margin-bottom:.6rem">
+          <span class="chip">Budgeting Workshop</span><span style="color:var(--warm);font-size:.8rem"> → </span><span class="chip">Cash Flow Statement</span><span class="chip">Budget Variance</span><span class="chip">Spending Plans</span>
+        </div>
+        <div class="card" style="margin-bottom:.6rem">
+          <span class="chip">Credit 101</span><span style="color:var(--warm);font-size:.8rem"> → </span><span class="chip">Credit</span><span class="chip">Compound Interest</span><span class="chip">Collections</span>
+        </div>
+        <div class="card" style="margin-bottom:.6rem">
+          <span class="chip">Loan Mgmt Guide</span><span style="color:var(--warm);font-size:.8rem"> → </span><span class="chip">Amortization</span><span class="chip">Acceleration Clause</span><span class="chip">Borrowing Limits</span>
+        </div>
+        <div class="card">
+          <span class="chip">Investing Basics</span><span style="color:var(--warm);font-size:.8rem"> → </span><span class="chip">Asset Allocation</span><span class="chip">Bond Yield</span><span class="chip">Buy-and-Hold</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 9: Notebook Examples -->
+  <section data-timer="0">
+    <h1>Field Notebook: Two Examples</h1>
+    <div class="cols">
+      <div>
+        <h3>Example 1 — Program Idea</h3>
+        <div class="notebook-mock" style="font-size:.78rem">
+          <div class="field"><span class="label">Date</span> May 18, 2026</div>
+          <div class="field"><span class="label">Idea Title</span> Peer Financial Mentorship Program</div>
+          <div class="field"><span class="label">Description</span> Train senior Peer Navigators to deliver one-on-one budgeting sessions during weekly drop-ins. 30-min structured format using B3 intake model.</div>
+          <div class="field"><span class="label">Target Population</span> Freshmen, First-gen</div>
+          <div class="field"><span class="label">AFCPE Connection</span> Action Plan, Cash Flow Statement, Budget Variance</div>
+          <div class="sketch-box">[ flow diagram: student → navigator → budget template ]</div>
+        </div>
+      </div>
+      <div>
+        <h3>Example 2 — Campaign Idea</h3>
+        <div class="notebook-mock" style="font-size:.78rem">
+          <div class="field"><span class="label">Date</span> May 18, 2026</div>
+          <div class="field"><span class="label">Idea Title</span> "Spend Smart, Bobcat" Campaign</div>
+          <div class="field"><span class="label">Description</span> 4-week social media campaign timed to NSO (Aug) and FAFSA season (Sep–Oct). Short video tips featuring student voices. Partner with FG newsletter.</div>
+          <div class="field"><span class="label">Target Population</span> All students, especially incoming</div>
+          <div class="field"><span class="label">AFCPE Connection</span> Behavioral Finance, Cognitive Reframing, Brainstorming</div>
+          <div class="sketch-box">[ mock Instagram post layout ]</div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:.8rem;font-size:.85rem;color:var(--warm)">Complete at least one full entry before we move to Part 2.</p>
+  </section>
+
+  <!-- SLIDE 10: Next Steps -->
+  <section data-timer="120">
+    <h1>Next Steps & Summer Timeline <span style="font-size:.9rem;color:var(--gold)">⏱ 2 min</span></h1>
+    <div class="cols">
+      <div>
+        <h3>From today</h3>
+        <ul>
+          <li>Compile notebook entries — submit photos by <strong>Friday</strong></li>
+          <li>Select top 3 ideas for MVP development</li>
+          <li>Assign leads for each MVP</li>
+        </ul>
+        <h3 style="margin-top:1rem">Summer MVP Build</h3>
+        <ul>
+          <li><strong>Weeks 1–2:</strong> Finalize scope, assign leads, pull AFCPE mappings</li>
+          <li><strong>Weeks 3–6:</strong> Build and pilot each MVP</li>
+          <li><strong>Weeks 7–8:</strong> Gather feedback, iterate, plan fall rollout</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Key Touchpoints Already on the Calendar</h3>
+        <ul>
+          <li><strong>Jun–Aug:</strong> NSO tabling and presentations (FG + AE)</li>
+          <li><strong>Aug Week 3:</strong> Welcome Week — FG Welcome Back Event</li>
+          <li><strong>Aug Week 4:</strong> Classes begin — B3 Period 1 launch</li>
+          <li><strong>Sep:</strong> FAFSA communication window (Handraise)</li>
+          <li><strong>Sep Week 2:</strong> Peer Navigator monthly training</li>
+          <li><strong>Oct:</strong> Registration workshops (FG + Peer Nav)</li>
+        </ul>
+        <div class="card" style="margin-top:.8rem;border-top-color:var(--maroon)">
+          <strong>Next slide →</strong> Full Operations Calendar for the year
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: Ops Calendar Title -->
+  <section data-timer="0">
+    <div style="margin-top:4rem;text-align:center">
+      <h1 style="text-align:center;font-size:2.5rem;border:none">Part 2: Operations Calendar</h1>
+      <p style="text-align:center;color:var(--warm);font-size:1.1rem">Full academic year · All teams · Weekly view</p>
+      <div style="margin-top:1.5rem">
+        <span class="tag">AE Operations</span>
+        <span class="tag gold">B3</span>
+        <span class="tag">FirstGen</span>
+        <span class="tag">Handraise</span>
+        <span class="tag gold">Financial Education</span>
+        <span class="tag">Peer Navigator</span>
+        <span class="tag">Assessment</span>
+      </div>
+      <p style="margin-top:2rem;font-size:.9rem;color:var(--warm)">Use the form on the next slides to add activities · Export to CSV at any time</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: Full Ops Calendar -->
+  <section data-timer="0" style="padding:1rem 1.5rem">
+    <h1 style="font-size:1.3rem;margin-bottom:.5rem">Operations Calendar — Full Year</h1>
+    <div class="cal-wrap">
+      <table class="cal-table">
+        <thead>
+          <tr>
+            <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Assessment</th><th>B3</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>DSS</th>
+          </tr>
+        </thead>
+        <tbody id="calBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SLIDE 13: Add Activity -->
+  <section data-timer="0">
+    <h1>Add to the Calendar</h1>
+    <div class="cols">
+      <div>
+        <div class="form-row"><label>Month</label>
+          <select id="f-month">
+            <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option>Jun</option><option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Week #</label><input type="number" id="f-week" min="1" max="5" placeholder="1–5"/></div>
+        <div class="form-row"><label>Team</label>
+          <select id="f-team">
+            <option>AE Operations</option><option>B3 Operations</option><option>FirstGen Operations</option><option>Handraise Operations</option><option>Financial Education Operations</option><option>Peer Navigator Operations</option><option>Assessment Team</option><option>DSS Operations</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Activity</label><input type="text" id="f-activity" placeholder="Describe the activity"/></div>
+        <div class="form-row"><label>Notes (optional)</label><textarea id="f-notes" rows="2" placeholder="Any context or details"></textarea></div>
+        <button class="btn" onclick="submitActivity()">Add to Calendar</button>
+      </div>
+      <div>
+        <h3>Recent additions</h3>
+        <div id="recent-list" style="font-size:.85rem;color:#444;line-height:2"></div>
+        <div style="margin-top:1.5rem">
+          <button class="btn secondary" onclick="exportCSV()">Export Full Calendar to CSV</button>
+          <p style="font-size:.8rem;color:var(--warm);margin-top:.5rem">Opens directly in Excel. Includes all original data plus any additions made today.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ </div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://unpkg.com/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({ controls:true, progress:true, slideNumber:true, history:true, center:false, transition:'slide', width:'100%', height:'100%', margin:0 });
+
+// ── TIMER ──────────────────────────────────────────────────────────
+let timerInterval = null;
+let timerAllowAdvance = false;
+
+function startTimer(seconds) {
+  clearInterval(timerInterval);
+  if (!seconds || seconds <= 0) { document.getElementById('timer-wrap').style.display='none'; return; }
+  const wrap = document.getElementById('timer-wrap');
+  const display = document.getElementById('timer-display');
+  const btn = document.getElementById('timer-advance');
+  wrap.style.display = 'block';
+  btn.style.display = 'none';
+  timerAllowAdvance = false;
+  let remaining = seconds;
+  function tick() {
+    const m = Math.floor(remaining/60);
+    const s = remaining % 60;
+    display.textContent = m + ':' + String(s).padStart(2,'0');
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      display.textContent = 'Done!';
+      display.style.color = 'var(--gold)';
+      btn.style.display = 'inline-block';
+      timerAllowAdvance = true;
+    }
+    remaining--;
+  }
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function advanceSlide() {
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('timer-display').style.color='var(--maroon)';
+  clearInterval(timerInterval);
+  Reveal.next();
+}
+
+Reveal.on('slidechanged', function(e) {
+  clearInterval(timerInterval);
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('timer-display').style.color='var(--maroon)';
+  document.getElementById('timer-advance').style.display='none';
+  const sec = parseInt(e.currentSlide.getAttribute('data-timer')||'0',10);
+  if (sec > 0) startTimer(sec);
+  if (e.indexh === 11) renderCalendar();
+});
+
+// ── OPS CALENDAR DATA ──────────────────────────────────────────────
+const BASE_CAL = [
+  {w:1,m:'Jan',uni:'',ae:'Retention outreach; Continuation grants',asmnt:'',b3:'Journey Launch; Welcome letter; Canvas publish',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:2,m:'Jan',uni:'Payment deadline',ae:'Retention outreach; Dean\'s list; Academic notice; Continuation grants',asmnt:'',b3:'Meeting availability',fg:'',hr:'Higher than Average',fin:'',pn:'Host Peer Mentor training',dss:''},
+  {w:3,m:'Jan',uni:'Classes begin',ae:'Retention outreach; Continuation grants',asmnt:'',b3:'Period 1: Welcome letter; Drop-in availability; Meeting availability',fg:'FG Advocate Meeting availability',hr:'Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Jan',uni:'',ae:'Retention outreach; Continuation grants',asmnt:'',b3:'Period 1: Drop-in; Meeting availability; Pythia outreach',fg:'FG Advocate Meeting; FG Welcome Back Event',hr:'Average',fin:'',pn:'',dss:''},
+  {w:1,m:'Feb',uni:'Full-term census',ae:'Retention outreach; EAP/Attendance Outreach',asmnt:'',b3:'Period 1: Drop-in; Meeting; Pythia; Full prior term outcomes analysis',fg:'FG Newsletter; FG Advocate Meeting',hr:'Average',fin:'',pn:'Host Mentor monthly training',dss:''},
+  {w:2,m:'Feb',uni:'',ae:"Dean's list event; EAP/Attendance outreach",asmnt:'event',b3:'Period 1: Drop-in; Meeting; Pythia',fg:'FG Advocate Meeting',hr:'Average',fin:'',pn:'Host Study Event (Power Hour)',dss:''},
+  {w:3,m:'Feb',uni:'',ae:'EAP/Attendance outreach',asmnt:'',b3:'Period 2: Period 1 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Monthly FG workshop',hr:'Lower than Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Feb',uni:'Schedule of classes',ae:'EAP/Attendance outreach',asmnt:'',b3:'Period 2: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting',hr:'Lower than Average',fin:'',pn:'Study Event (Power Hour); US1100 Presentations',dss:''},
+  {w:1,m:'Mar',uni:'',ae:'',asmnt:'',b3:'Period 2: Drop-in; Meeting',fg:'FG Newsletter; FG Advocate Meeting; FG Celebration RSVPs; Registration workshop (w/ Mentoring)',hr:'Average',fin:'',pn:'Registration Workshops (w/ FG); Recruitment Summer/Fall; Mentor monthly training; US1100 Presentations',dss:''},
+  {w:2,m:'Mar',uni:'',ae:'',asmnt:'',b3:'Period 2: Drop-in; Meeting',fg:'FG Advocate Meeting; Monthly FG workshop; Registration workshop (w/ Mentoring)',hr:'Average',fin:'',pn:'Registration Workshops (w/ FG); Recruitment Summer/Fall; US1100 Presentations',dss:''},
+  {w:3,m:'Mar',uni:'Spring break',ae:'',asmnt:'',b3:'Period 3: Inbound only',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Mar',uni:'',ae:'',asmnt:'',b3:'Period 3: Period 2 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Registration Workshop (w/ Mentoring)',hr:'Average',fin:'',pn:'Registration Workshop (w/ FG)',dss:''},
+  {w:5,m:'Mar',uni:'Registration begins; Auto W deadline',ae:'',asmnt:'',b3:'Period 3: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Registration workshop (w/ Mentoring)',hr:'Average',fin:'',pn:'Registration Workshop (w/ FG)',dss:''},
+  {w:1,m:'Apr',uni:'',ae:'Registration outreach',asmnt:'',b3:'Period 3: Drop-in; Meeting',fg:'FG Newsletter; FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Interview candidates Summer/Fall; Registration Outreach to Mentees; Mentor monthly training',dss:''},
+  {w:2,m:'Apr',uni:'',ae:'Registration outreach',asmnt:'',b3:'Period 3: Drop-in; Meeting',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Registration Outreach to Mentees',dss:''},
+  {w:3,m:'Apr',uni:'Withdraw deadline',ae:'Registration outreach',asmnt:'',b3:'Period 4: Period 3 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Registration Outreach to Mentees',dss:''},
+  {w:4,m:'Apr',uni:'',ae:'Registration outreach',asmnt:'',b3:'Period 4: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Registration Outreach to Mentees',dss:''},
+  {w:1,m:'May',uni:'',ae:'',asmnt:'',b3:'Period 4: Drop-in; Meeting',fg:'FG Newsletter; FG Advocate Meeting',hr:'Average',fin:'',pn:'Registration Outreach to Mentees; Mentor/Navigator Banquet',dss:''},
+  {w:2,m:'May',uni:'Finals week; Commencement',ae:'',asmnt:'',b3:'Period 4: Drop-in; Meeting',fg:'FG Celebration Ceremonies; First Gen Stole Distribution; End of Semester Report; Annual Report (Lopez Foundation)',hr:'Average',fin:'',pn:'End of Semester Report',dss:''},
+  {w:3,m:'May',uni:'Grades post',ae:'',asmnt:'results',b3:'Initial EOT assessment; Bounced Back letter',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:4,m:'May',uni:'',ae:'',asmnt:'',b3:'',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:5,m:'May',uni:'Summer 1 begins; Degrees post',ae:"Dean's list; Academic Notice",asmnt:'',b3:'Learn about appeals availability; Program assessment',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:1,m:'Jun',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program assessment',fg:'NSO tabling and presentations; FG Celebration RSVPs',hr:'Average',fin:'',pn:'',dss:''},
+  {w:2,m:'Jun',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program assessment',fg:'NSO tabling and presentations',hr:'Average',fin:'',pn:'',dss:''},
+  {w:3,m:'Jun',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program assessment',fg:'NSO tabling and presentations',hr:'Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Jun',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program assessment',fg:'NSO tabling and presentations',hr:'Average',fin:'',pn:'',dss:''},
+  {w:1,m:'Jul',uni:'Summer 2 begins',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program updates',fg:'NSO tabling and presentations',hr:'Average',fin:'',pn:'',dss:''},
+  {w:2,m:'Jul',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program updates',fg:'NSO tabling and presentations',hr:'Average',fin:'',pn:'',dss:''},
+  {w:3,m:'Jul',uni:'',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program updates',fg:'NSO tabling and presentations',hr:'Higher than Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Jul',uni:'Summer finals',ae:'Retention outreach; NSO',asmnt:'',b3:'Learn about appeals; Program updates',fg:'NSO tabling and presentations',hr:'Higher than Average',fin:'',pn:'',dss:''},
+  {w:1,m:'Aug',uni:'Summer commencement; Grades post',ae:'SAP Requirements Message',asmnt:'',b3:'Journey Launch; Welcome letter; Canvas publish',fg:'First Gen Celebration Ceremony; First Gen Stole Distribution',hr:'Higher than Average',fin:'',pn:'',dss:''},
+  {w:2,m:'Aug',uni:'Summer degrees post',ae:'Continuation grants',asmnt:'',b3:'',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:3,m:'Aug',uni:'Payment deadline',ae:'Continuation grants; Welcome week; Dropped for non-payment',asmnt:'Outcomes entry',b3:'',fg:'FG Welcome Back Event (Welcome Week)',hr:'Average',fin:'',pn:'Host training for Mentors/Navigators',dss:''},
+  {w:4,m:'Aug',uni:'Classes begin',ae:'Retention outreach; Continuation grants; Dropped for non-payment',asmnt:'',b3:'Period 1: Welcome letter; Drop-in; Meeting',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:1,m:'Sep',uni:'',ae:'Retention outreach; Continuation grants',asmnt:'',b3:'Period 1: Drop-in; Meeting; Pythia outreach',fg:'FG Advocate Meeting',hr:'Average',fin:'FAFSA Communication',pn:'',dss:''},
+  {w:2,m:'Sep',uni:'Census',ae:'Retention outreach; EAP/Attendance Outreach',asmnt:'',b3:'Period 1: Drop-in; Meeting; Pythia; Full prior term outcomes analysis',fg:'FG Advocate Meeting; Monthly FG workshop',hr:'Average',fin:'FAFSA Communication',pn:'Host Mentor Monthly training',dss:''},
+  {w:3,m:'Sep',uni:'',ae:"Dean's list event; EAP/Attendance outreach",asmnt:'',b3:'Period 1: Drop-in; Meeting; Pythia',fg:'FG Advocate Meeting',hr:'Average',fin:'FAFSA Communication',pn:'',dss:''},
+  {w:4,m:'Sep',uni:'Schedule of classes',ae:'EAP/Attendance outreach',asmnt:'',b3:'Period 2: Period 1 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting',hr:'Average',fin:'FAFSA Communication',pn:'',dss:''},
+  {w:1,m:'Oct',uni:'',ae:'EAP/Attendance outreach',asmnt:'',b3:'Period 2: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Registration Workshops (w/ Peer Nav); FG Newsletter',hr:'Average',fin:'FAFSA Completion / Assistance',pn:'Recruitment for Spring; Registration Workshop (w/ FG)',dss:''},
+  {w:2,m:'Oct',uni:'',ae:'',asmnt:'',b3:'Period 2: Drop-in; Meeting',fg:'FG Advocate Meeting; Registration Workshops (w/ Peer Nav); Monthly FG workshop',hr:'Average',fin:'',pn:'Recruitment for Spring; Registration Workshop (w/ FG); Host Mentor Monthly training',dss:''},
+  {w:3,m:'Oct',uni:"Registration begins; Auto W deadline",ae:"VB's annual report",asmnt:'',b3:'Period 2: Drop-in; Meeting',fg:'FG Advocate Meeting; Registration Workshops (w/ Peer Nav)',hr:'Average',fin:'',pn:'Registration Workshop (w/ FG); Interview prospective Mentors/Navigators',dss:''},
+  {w:4,m:'Oct',uni:'',ae:"Dean's list event",asmnt:'',b3:'Period 3: Period 2 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Registration Workshops (w/ Peer Nav)',hr:'Average',fin:'',pn:'Registration Workshop (w/ FG); Interview prospective Mentors/Navigators',dss:''},
+  {w:5,m:'Oct',uni:'',ae:'',asmnt:'',b3:'Period 3: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; Registration Workshops (w/ Peer Nav)',hr:'Average',fin:'',pn:'Registration Workshop (w/ FG); Interview prospective Mentors/Navigators',dss:''},
+  {w:1,m:'Nov',uni:'',ae:'Registration outreach',asmnt:'',b3:'Period 3: Drop-in; Meeting',fg:'National First Gen Celebration Week; FG Advocate Meeting; FG Newsletter; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Job offer sent for Spring; Registration Outreach to Mentees',dss:''},
+  {w:2,m:'Nov',uni:'Withdraw deadline',ae:'Registration outreach',asmnt:'',b3:'Period 3: Drop-in; Meeting',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Higher than Average',fin:'',pn:'Registration Outreach to Mentees; Host Mentor Monthly training',dss:''},
+  {w:3,m:'Nov',uni:'',ae:'Registration outreach',asmnt:'',b3:'Period 4: Period 3 assessment; Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Higher than Average',fin:'',pn:'Registration Outreach to Mentees',dss:''},
+  {w:4,m:'Nov',uni:'',ae:'',asmnt:'',b3:'Period 4: Drop-in; Meeting; BB hold outreach',fg:'FG Advocate Meeting; FG FTIC Registration Outreach',hr:'Average',fin:'',pn:'Registration Outreach to Mentees',dss:''},
+  {w:5,m:'Nov',uni:'Finals week',ae:'',asmnt:'',b3:'Period 4: Drop-in; Meeting',fg:'',hr:'Average',fin:'',pn:'Mentor/Navigator Banquet',dss:''},
+  {w:1,m:'Dec',uni:'Commencement',ae:'',asmnt:'',b3:'Period 4: Drop-in; Meeting',fg:'First Gen Celebration Ceremonies; First Gen Stole Distribution; FG Newsletter',hr:'Average',fin:'',pn:'End of Semester Report',dss:''},
+  {w:2,m:'Dec',uni:'Grades post',ae:'SAP Requirements Message',asmnt:'',b3:'Initial EOT assessment; Bounced Back letter',fg:'End of Semester Report; Academic Progress Report (Lopez Foundation)',hr:'Average',fin:'',pn:'End of Semester Report',dss:''},
+  {w:3,m:'Dec',uni:'',ae:'',asmnt:'',b3:'',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:4,m:'Dec',uni:'Winter break',ae:'',asmnt:'',b3:'',fg:'',hr:'Average',fin:'',pn:'',dss:''},
+  {w:5,m:'Dec',uni:'Winter break',ae:'',asmnt:'',b3:'',fg:'',hr:'',fin:'',pn:'',dss:''}
+];
+
+const CAL_KEY = 'txst_ops_cal_additions';
+
+function getAdditions() {
+  try { return JSON.parse(localStorage.getItem(CAL_KEY)||'[]'); } catch(e){ return []; }
+}
+
+function renderCalendar() {
+  const additions = getAdditions();
+  const tbody = document.getElementById('calBody');
+  if (!tbody) return;
+  let html = '';
+  let lastMonth = '';
+  BASE_CAL.forEach(function(row) {
+    if (row.m !== lastMonth) {
+      html += '<tr class="month-header"><td colspan="11" style="padding:6px 8px">' + row.m + '</td></tr>';
+      lastMonth = row.m;
+    }
+    // merge any additions for this week/month
+    const extra = additions.filter(function(a){ return a.m===row.m && String(a.w)===String(row.w); });
+    const fields = {ae:row.ae,b3:row.b3,fg:row.fg,hr:row.hr,fin:row.fin,pn:row.pn,asmnt:row.asmnt,dss:row.dss};
+    extra.forEach(function(a){
+      const key = teamKey(a.team);
+      if(key && fields[key]) fields[key] += '; <em style="color:var(--gold)">'+a.activity+'</em>';
+      else if(key) fields[key] = '<em style="color:var(--gold)">'+a.activity+'</em>';
     });
-  </script>
-  <script>
-    // Calendar MVP logic (localStorage)
-    const CAL_KEY = 'opsCalendar'
-    function loadInitial(){
-      let data = localStorage.getItem(CAL_KEY)
-      if(!data){
-        data = JSON.stringify([
-          {id:1, date:'2026-06-01', title:'Kickoff', description:'Intro session on financial wellness'},
-          {id:2, date:'2026-06-08', title:'Budgeting Basics', description:'Workshop on budgets'}
-        ])
-        localStorage.setItem(CAL_KEY, data)
-      }
-      return JSON.parse(data)
-    }
-    function renderOpsCalendar(){
-      const events = loadInitial()
-      const El = document.getElementById('opsCalendar')
-      if(!El) return
-      if(events.length===0){ El.innerHTML = '<p>No events yet.</p>'; return }
-      let html = '<table id="opsCalendarTable"><thead><tr><th>Date</th><th>Title</th><th>Description</th></tr></thead><tbody>'
-      events.forEach(e=>{ html += `<tr><td>${e.date}</td><td>${e.title}</td><td>${e.description}</td></tr>` })
-      html += '</tbody></table>'
-      El.innerHTML = html
-    }
-    function addActivity(){
-      const date = document.getElementById('actDate').value
-      const title = document.getElementById('actTitle').value
-      const desc = document.getElementById('actDesc').value
-      if(!date || !title) return
-      const arr = loadInitial()
-      const id = (arr.length? arr[arr.length-1].id+1:1)
-      arr.push({id, date, title, description: desc})
-      localStorage.setItem(CAL_KEY, JSON.stringify(arr))
-      renderOpsCalendar()
-      document.getElementById('activityForm').reset()
-    }
-    function exportCSV(){
-      const events = loadInitial()
-      const header = ['Date','Title','Description']
-      const rows = events.map(e => [e.date, e.title, e.description])
-      let csv = header.join(',') + '\n' + rows.map(r=> r.map(v=> '"'+String(v).replace(/"/g, '""')+'"').join(',')).join('\n')
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a'); a.href = url; a.download = 'operations-calendar.csv'; a.click(); URL.revokeObjectURL(url)
-    }
-    document.addEventListener('DOMContentLoaded', renderOpsCalendar)
-  </script>
+    html += '<tr><td>'+row.w+'</td><td>'+row.m+'</td><td>'+row.uni+'</td><td>'+fields.ae+'</td><td>'+fields.asmnt+'</td><td>'+fields.b3+'</td><td>'+fields.fg+'</td><td>'+fields.hr+'</td><td>'+fields.fin+'</td><td>'+fields.pn+'</td><td>'+fields.dss+'</td></tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function teamKey(team) {
+  const map = {'AE Operations':'ae','B3 Operations':'b3','FirstGen Operations':'fg','Handraise Operations':'hr','Financial Education Operations':'fin','Peer Navigator Operations':'pn','Assessment Team':'asmnt','DSS Operations':'dss'};
+  return map[team]||null;
+}
+
+function submitActivity() {
+  const m = document.getElementById('f-month').value;
+  const w = document.getElementById('f-week').value;
+  const team = document.getElementById('f-team').value;
+  const activity = document.getElementById('f-activity').value.trim();
+  if (!w || !activity) { alert('Please fill in Week # and Activity.'); return; }
+  const arr = getAdditions();
+  arr.push({m,w,team,activity,notes:document.getElementById('f-notes').value.trim(),ts:new Date().toISOString()});
+  localStorage.setItem(CAL_KEY, JSON.stringify(arr));
+  document.getElementById('f-activity').value='';
+  document.getElementById('f-notes').value='';
+  // update recent list
+  const el = document.getElementById('recent-list');
+  el.innerHTML = arr.slice(-5).reverse().map(function(a){ return '&#10003; <strong>'+a.m+' W'+a.w+'</strong> · '+a.team+' · '+a.activity; }).join('<br>');
+}
+
+function exportCSV() {
+  const additions = getAdditions();
+  const merged = BASE_CAL.map(function(row) {
+    const r = Object.assign({},row);
+    additions.filter(function(a){ return a.m===r.m && String(a.w)===String(r.w); }).forEach(function(a){
+      const k = teamKey(a.team);
+      if(k) r[k] = (r[k]?r[k]+'; ':'')+a.activity+(a.notes?' ('+a.notes+')':'');
+    });
+    return r;
+  });
+  const header = ['Week','Month','University Calendar','AE Operations','Assessment','B3 Operations','FirstGen Operations','Handraise','Financial Education','Peer Navigator','DSS'];
+  const rows = merged.map(function(r){ return [r.w,r.m,r.uni,r.ae,r.asmnt,r.b3,r.fg,r.hr,r.fin,r.pn,r.dss].map(function(v){ return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(','); });
+  const csv = header.join(',')+'\n'+rows.join('\n');
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='txst-ops-calendar.csv'; a.click(); URL.revokeObjectURL(url);
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', function(){ renderCalendar(); });
+</script>
 </body>
 </html>

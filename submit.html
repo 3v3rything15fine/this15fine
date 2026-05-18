@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Add to Ops Calendar — TXST Academic Engagement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    :root {
+      --maroon: #501214;
+      --gold: #8d734a;
+      --cream: #f5f0e8;
+      --warm: #8a8d8f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+      color: #222;
+    }
+    header {
+      background: var(--maroon);
+      color: var(--cream);
+      padding: 1rem 1.5rem;
+    }
+    header h1 { margin: 0; font-size: 1.3rem; }
+    header p { margin: .2rem 0 0; font-size: .85rem; opacity: .8; }
+    .container { max-width: 560px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    label { display: block; font-weight: bold; color: var(--maroon); font-size: .85rem; margin-bottom: .25rem; margin-top: 1rem; }
+    input, select, textarea {
+      width: 100%; padding: .6rem .8rem;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-size: 1rem; background: white;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--gold); border-color: var(--gold);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn {
+      display: block; width: 100%;
+      background: var(--maroon); color: white;
+      border: none; border-radius: 6px;
+      padding: .9rem; font-size: 1.1rem;
+      cursor: pointer; margin-top: 1.5rem;
+      font-weight: bold;
+    }
+    .btn:active { background: var(--gold); }
+    .success {
+      display: none;
+      background: #e8f5e9; border: 1px solid #a5d6a7;
+      border-radius: 6px; padding: 1rem;
+      margin-top: 1rem; text-align: center;
+      color: #2e7d32; font-weight: bold;
+    }
+    .recent { margin-top: 2rem; }
+    .recent h2 { font-size: 1rem; color: var(--maroon); border-bottom: 2px solid var(--gold); padding-bottom: .3rem; }
+    .recent-item {
+      background: white; border-radius: 6px;
+      padding: .6rem .8rem; margin-top: .5rem;
+      border-left: 4px solid var(--gold);
+      font-size: .85rem; line-height: 1.5;
+    }
+    .recent-item .meta { color: var(--warm); font-size: .75rem; }
+    .note { font-size: .78rem; color: var(--warm); margin-top: .3rem; }
+    .required { color: var(--maroon); }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Add to Operations Calendar</h1>
+  <p>TXST Academic Engagement · Workshop Session</p>
+</header>
+<div class="container">
+  <p style="font-size:.9rem;color:#444">Use this form to suggest a new activity or event. Your submission will appear in the shared calendar during today's session.</p>
+
+  <label>Month <span class="required">*</span></label>
+  <select id="f-month">
+    <option value="">— select —</option>
+    <option>Jan</option><option>Feb</option><option>Mar</option>
+    <option>Apr</option><option>May</option><option>Jun</option>
+    <option>Jul</option><option>Aug</option><option>Sep</option>
+    <option>Oct</option><option>Nov</option><option>Dec</option>
+  </select>
+
+  <label>Week of Month <span class="required">*</span></label>
+  <select id="f-week">
+    <option value="">— select —</option>
+    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+  </select>
+
+  <label>Team / Area <span class="required">*</span></label>
+  <select id="f-team">
+    <option value="">— select —</option>
+    <option>AE Operations</option>
+    <option>Academic Engagement Operations</option>
+    <option>FirstGen Operations</option>
+    <option>Handraise Operations</option>
+    <option>Financial Education Operations</option>
+    <option>Peer Navigator Operations</option>
+    <option>Assessment Team</option>
+    <option>DSS Operations</option>
+    <option>University / Academic Calendar</option>
+  </select>
+
+  <label>Activity / Event <span class="required">*</span></label>
+  <input type="text" id="f-activity" placeholder="Describe the activity or event"/>
+
+  <label>Notes <span style="font-weight:normal;color:var(--warm)">(optional)</span></label>
+  <textarea id="f-notes" placeholder="Any context, partners, or details"></textarea>
+
+  <label>Your Name <span style="font-weight:normal;color:var(--warm)">(optional)</span></label>
+  <input type="text" id="f-name" placeholder="So we know who suggested it"/>
+
+  <p class="note">Submissions are stored on this device and synced to the main calendar when you return to this15fine.dev. All additions are color-coded in the CSV export.</p>
+
+  <button class="btn" onclick="submitForm()">Add to Calendar</button>
+  <div class="success" id="success-msg">
+    ✓ Added! Your entry will appear in the shared calendar.<br>
+    <span style="font-weight:normal;font-size:.9rem">Add another or close this page.</span>
+  </div>
+
+  <div class="recent" id="recent-section" style="display:none">
+    <h2>Added this session</h2>
+    <div id="recent-list"></div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'txst_ops_cal_additions';
+
+  function getItems() {
+    try { return JSON.parse(localStorage.getItem(KEY)||'[]'); } catch(e){ return []; }
+  }
+
+  function renderRecent() {
+    const items = getItems();
+    const today = new Date().toDateString();
+    const todayItems = items.filter(function(i){ return new Date(i.ts).toDateString() === today; });
+    const section = document.getElementById('recent-section');
+    const list = document.getElementById('recent-list');
+    if (todayItems.length === 0) { section.style.display='none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = todayItems.slice().reverse().map(function(i){
+      return '<div class="recent-item">'
+        + '<strong>' + i.activity + '</strong>'
+        + '<br><span class="meta">' + i.team + ' · ' + i.m + ' Week ' + i.w
+        + (i.name ? ' · ' + i.name : '')
+        + '</span>'
+        + (i.notes ? '<br><span style="color:#555">' + i.notes + '</span>' : '')
+        + '</div>';
+    }).join('');
+  }
+
+  function submitForm() {
+    const m = document.getElementById('f-month').value;
+    const w = document.getElementById('f-week').value;
+    const team = document.getElementById('f-team').value;
+    const activity = document.getElementById('f-activity').value.trim();
+    if (!m || !w || !team || !activity) {
+      alert('Please fill in Month, Week, Team, and Activity.');
+      return;
+    }
+    const arr = getItems();
+    arr.push({
+      m, w, team, activity,
+      notes: document.getElementById('f-notes').value.trim(),
+      name: document.getElementById('f-name').value.trim(),
+      ts: new Date().toISOString(),
+      session: new Date().toDateString()
+    });
+    localStorage.setItem(KEY, JSON.stringify(arr));
+
+    // Reset form
+    document.getElementById('f-month').value = '';
+    document.getElementById('f-week').value = '';
+    document.getElementById('f-team').value = '';
+    document.getElementById('f-activity').value = '';
+    document.getElementById('f-notes').value = '';
+    document.getElementById('f-name').value = '';
+
+    // Show success
+    const msg = document.getElementById('success-msg');
+    msg.style.display = 'block';
+    setTimeout(function(){ msg.style.display='none'; }, 3000);
+
+    renderRecent();
+  }
+
+  renderRecent();
+</script>
+</body>
+</html>

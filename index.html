@@ -519,63 +519,84 @@
 
   <!-- SLIDE 11: Ops Calendar Title -->
   <section data-timer="0">
-    <div style="margin-top:4rem;text-align:center">
-      <h1 style="text-align:center;font-size:2.5rem;border:none">Part 2: Operations Calendar</h1>
-      <p style="text-align:center;color:var(--warm);font-size:1.1rem">Full academic year · All teams · Weekly view</p>
-      <div style="margin-top:1.5rem">
-        <span class="tag">AE Operations</span>
-        <span class="tag gold">Academic Engagement</span>
-        <span class="tag">FirstGen</span>
-        <span class="tag">Handraise</span>
-        <span class="tag gold">Financial Education</span>
-        <span class="tag">Peer Navigator</span>
-        <span class="tag">Assessment</span>
+    <div style="margin-top:2.5rem;text-align:center">
+      <h1 style="text-align:center;font-size:2.2rem;border:none">Part 2: Operations Calendar</h1>
+      <p style="text-align:center;color:var(--warm);font-size:1rem">Academic year view by term · All teams</p>
+      <div style="margin-top:1rem">
+        <span class="tag">AE Ops</span><span class="tag gold">Acad. Engagement</span><span class="tag">FirstGen</span>
+        <span class="tag">Handraise</span><span class="tag gold">Fin. Ed.</span><span class="tag">Peer Nav</span>
       </div>
-      <p style="margin-top:2rem;font-size:.9rem;color:var(--warm)">Use the form on the next slides to add activities · Export to CSV at any time</p>
+      <div style="margin-top:2rem;display:flex;gap:2rem;justify-content:center;align-items:flex-start;flex-wrap:wrap">
+        <div style="text-align:left">
+          <p style="font-size:.9rem;margin:0 0 .5rem;color:#444">Scan to add an activity from your phone:</p>
+          <div id="qr-placeholder" style="width:140px;height:140px;background:white;border:2px solid var(--maroon);display:flex;align-items:center;justify-content:center;border-radius:6px">
+            <canvas id="qr-canvas"></canvas>
+          </div>
+          <p style="font-size:.75rem;color:var(--warm);margin:.4rem 0 0">submit.this15fine.dev</p>
+        </div>
+        <div style="text-align:left;max-width:300px">
+          <h3 style="margin-top:0">How to use</h3>
+          <ul style="font-size:.9rem">
+            <li>Scan the QR code on your phone</li>
+            <li>Fill in the form — takes 30 seconds</li>
+            <li>Your entry appears highlighted in the calendar</li>
+            <li>Export to CSV when done — new entries are color-coded</li>
+          </ul>
+          <div style="background:white;border-left:4px solid var(--gold);padding:.6rem .8rem;border-radius:4px;font-size:.85rem">
+            <span style="background:#fff3cd;padding:1px 6px;border-radius:3px;font-size:.8rem">■ Yellow highlight</span> = added today's session
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- SLIDE 12: Full Ops Calendar -->
+  <!-- SLIDE 12: Fall Term -->
   <section data-timer="0" style="padding:1rem 1.5rem">
-    <h1 style="font-size:1.3rem;margin-bottom:.5rem">Operations Calendar — Full Year</h1>
-    <div class="cal-wrap">
-      <table class="cal-table">
-        <thead>
-          <tr>
-            <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Assessment</th><th>Acad. Engagement</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>DSS</th>
-          </tr>
-        </thead>
-        <tbody id="calBody"></tbody>
-      </table>
+    <h1 style="font-size:1.4rem;margin-bottom:.3rem">Fall Term <span style="font-size:1rem;color:var(--warm);font-weight:normal">Aug · Sep · Oct · Nov · Dec</span></h1>
+    <div class="cal-wrap" style="max-height:75vh">
+      <table class="cal-table"><thead><tr>
+        <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Acad. Engagement</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>Assessment</th>
+      </tr></thead><tbody id="calFall"></tbody></table>
     </div>
   </section>
 
-  <!-- SLIDE 13: Add Activity -->
+  <!-- SLIDE 13: Spring Term -->
+  <section data-timer="0" style="padding:1rem 1.5rem">
+    <h1 style="font-size:1.4rem;margin-bottom:.3rem">Spring Term <span style="font-size:1rem;color:var(--warm);font-weight:normal">Jan · Feb · Mar · Apr · May</span></h1>
+    <div class="cal-wrap" style="max-height:75vh">
+      <table class="cal-table"><thead><tr>
+        <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Acad. Engagement</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>Assessment</th>
+      </tr></thead><tbody id="calSpring"></tbody></table>
+    </div>
+  </section>
+
+  <!-- SLIDE 14: Summer Term -->
+  <section data-timer="0" style="padding:1rem 1.5rem">
+    <h1 style="font-size:1.4rem;margin-bottom:.3rem">Summer <span style="font-size:1rem;color:var(--warm);font-weight:normal">Jun · Jul · Aug (early)</span></h1>
+    <div class="cal-wrap" style="max-height:75vh">
+      <table class="cal-table"><thead><tr>
+        <th>Wk</th><th>Month</th><th>University</th><th>AE Ops</th><th>Acad. Engagement</th><th>FirstGen</th><th>Handraise</th><th>Fin. Ed.</th><th>Peer Nav</th><th>Assessment</th>
+      </tr></thead><tbody id="calSummer"></tbody></table>
+    </div>
+  </section>
+
+  <!-- SLIDE 15: Export & QR -->
   <section data-timer="0">
-    <h1>Add to the Calendar</h1>
+    <h1>Capture & Export</h1>
     <div class="cols">
       <div>
-        <div class="form-row"><label>Month</label>
-          <select id="f-month">
-            <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option>Jun</option><option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
-          </select>
-        </div>
-        <div class="form-row"><label>Week #</label><input type="number" id="f-week" min="1" max="5" placeholder="1–5"/></div>
-        <div class="form-row"><label>Team</label>
-          <select id="f-team">
-            <option>AE Operations</option><option>Academic Engagement Operations</option><option>FirstGen Operations</option><option>Handraise Operations</option><option>Financial Education Operations</option><option>Peer Navigator Operations</option><option>Assessment Team</option><option>DSS Operations</option>
-          </select>
-        </div>
-        <div class="form-row"><label>Activity</label><input type="text" id="f-activity" placeholder="Describe the activity"/></div>
-        <div class="form-row"><label>Notes (optional)</label><textarea id="f-notes" rows="2" placeholder="Any context or details"></textarea></div>
-        <button class="btn" onclick="submitActivity()">Add to Calendar</button>
+        <h3>Submissions this session</h3>
+        <div id="session-additions" style="font-size:.85rem;max-height:45vh;overflow-y:auto"></div>
       </div>
       <div>
-        <h3>Recent additions</h3>
-        <div id="recent-list" style="font-size:.85rem;color:#444;line-height:2"></div>
+        <h3>Export</h3>
+        <p style="font-size:.9rem">Download the full calendar as CSV. Additions from today's session are flagged with <span style="background:#fff3cd;padding:1px 6px;border-radius:3px">ADDED_TODAY</span> in the source column so you can filter in Excel.</p>
+        <button class="btn" onclick="exportCSV()" style="max-width:260px">Export Calendar to CSV</button>
+        <p style="font-size:.8rem;color:var(--warm);margin-top:.5rem">File: txst-ops-calendar.csv · Open directly in Excel</p>
         <div style="margin-top:1.5rem">
-          <button class="btn secondary" onclick="exportCSV()">Export Full Calendar to CSV</button>
-          <p style="font-size:.8rem;color:var(--warm);margin-top:.5rem">Opens directly in Excel. Includes all original data plus any additions made today.</p>
+          <h3>Submit form</h3>
+          <p style="font-size:.85rem">Share this link or QR with participants:</p>
+          <code style="background:#eee;padding:4px 8px;border-radius:4px;font-size:.85rem">submit.this15fine.dev</code>
         </div>
       </div>
     </div>
@@ -664,7 +685,7 @@ Reveal.on('slidechanged', function(e) {
   document.getElementById('timer-advance').style.display='none';
   const sec = parseInt(e.currentSlide.getAttribute('data-timer')||'0',10);
   if (sec > 0) startTimer(sec);
-  if (e.indexh === 11) renderCalendar();
+  // term cals rendered via renderAllCals in slidechanged above
 });
 
 // ── OPS CALENDAR DATA ──────────────────────────────────────────────
@@ -725,76 +746,106 @@ const BASE_CAL = [
 ];
 
 const CAL_KEY = 'txst_ops_cal_additions';
+const TODAY = new Date().toDateString();
+const FALL_MONTHS   = ['Aug','Sep','Oct','Nov','Dec'];
+const SPRING_MONTHS = ['Jan','Feb','Mar','Apr','May'];
+const SUMMER_MONTHS = ['Jun','Jul'];
 
 function getAdditions() {
   try { return JSON.parse(localStorage.getItem(CAL_KEY)||'[]'); } catch(e){ return []; }
 }
-
-function renderCalendar() {
-  const additions = getAdditions();
-  const tbody = document.getElementById('calBody');
-  if (!tbody) return;
-  let html = '';
-  let lastMonth = '';
-  BASE_CAL.forEach(function(row) {
-    if (row.m !== lastMonth) {
-      html += '<tr class="month-header"><td colspan="11" style="padding:6px 8px">' + row.m + '</td></tr>';
-      lastMonth = row.m;
-    }
-    // merge any additions for this week/month
-    const extra = additions.filter(function(a){ return a.m===row.m && String(a.w)===String(row.w); });
-    const fields = {ae:row.ae,b3:row.b3,fg:row.fg,hr:row.hr,fin:row.fin,pn:row.pn,asmnt:row.asmnt,dss:row.dss};
-    extra.forEach(function(a){
-      const key = teamKey(a.team);
-      if(key && fields[key]) fields[key] += '; <em style="color:var(--gold)">'+a.activity+'</em>';
-      else if(key) fields[key] = '<em style="color:var(--gold)">'+a.activity+'</em>';
-    });
-    html += '<tr><td>'+row.w+'</td><td>'+row.m+'</td><td>'+row.uni+'</td><td>'+fields.ae+'</td><td>'+fields.asmnt+'</td><td>'+fields.b3+'</td><td>'+fields.fg+'</td><td>'+fields.hr+'</td><td>'+fields.fin+'</td><td>'+fields.pn+'</td><td>'+fields.dss+'</td></tr>';
-  });
-  tbody.innerHTML = html;
-}
-
+function isToday(ts) { return new Date(ts).toDateString() === TODAY; }
 function teamKey(team) {
-  const map = {'AE Operations':'ae','Academic Engagement Operations':'b3','FirstGen Operations':'fg','Handraise Operations':'hr','Financial Education Operations':'fin','Peer Navigator Operations':'pn','Assessment Team':'asmnt','DSS Operations':'dss'};
+  const map = {
+    'AE Operations':'ae','Academic Engagement Operations':'b3',
+    'FirstGen Operations':'fg','Handraise Operations':'hr',
+    'Financial Education Operations':'fin','Peer Navigator Operations':'pn',
+    'Assessment Team':'asmnt','DSS Operations':'dss','University / Academic Calendar':'uni'
+  };
   return map[team]||null;
 }
-
-function submitActivity() {
-  const m = document.getElementById('f-month').value;
-  const w = document.getElementById('f-week').value;
-  const team = document.getElementById('f-team').value;
-  const activity = document.getElementById('f-activity').value.trim();
-  if (!w || !activity) { alert('Please fill in Week # and Activity.'); return; }
-  const arr = getAdditions();
-  arr.push({m,w,team,activity,notes:document.getElementById('f-notes').value.trim(),ts:new Date().toISOString()});
-  localStorage.setItem(CAL_KEY, JSON.stringify(arr));
-  document.getElementById('f-activity').value='';
-  document.getElementById('f-notes').value='';
-  // update recent list
-  const el = document.getElementById('recent-list');
-  el.innerHTML = arr.slice(-5).reverse().map(function(a){ return '&#10003; <strong>'+a.m+' W'+a.w+'</strong> · '+a.team+' · '+a.activity; }).join('<br>');
+function buildRows(months) {
+  const additions = getAdditions();
+  let html = '', lastMonth = '';
+  BASE_CAL.filter(function(r){ return months.includes(r.m); }).forEach(function(row) {
+    if (row.m !== lastMonth) {
+      html += '<tr class="month-header"><td colspan="10">'+row.m+'</td></tr>';
+      lastMonth = row.m;
+    }
+    const extra = additions.filter(function(a){ return a.m===row.m && String(a.w)===String(row.w); });
+    const fields = {ae:row.ae,b3:row.b3,fg:row.fg,hr:row.hr,fin:row.fin,pn:row.pn,asmnt:row.asmnt};
+    extra.forEach(function(a){
+      const key = teamKey(a.team);
+      if (!key||key==='uni') return;
+      const tag = isToday(a.ts)
+        ? '<span style="background:#fff3cd;padding:1px 5px;border-radius:3px;font-weight:bold">&#9733; '+a.activity+'</span>'
+        : '<em style="color:var(--gold)">'+a.activity+'</em>';
+      fields[key] = fields[key] ? fields[key]+'; '+tag : tag;
+    });
+    const rowBg = extra.some(function(a){return isToday(a.ts);}) ? ' style="background:#fffde7"' : '';
+    html += '<tr'+rowBg+'><td>'+row.w+'</td><td>'+row.m+'</td><td>'+row.uni+'</td>'
+      +'<td>'+fields.ae+'</td><td>'+fields.b3+'</td><td>'+fields.fg+'</td>'
+      +'<td>'+fields.hr+'</td><td>'+fields.fin+'</td><td>'+fields.pn+'</td>'
+      +'<td>'+fields.asmnt+'</td></tr>';
+  });
+  return html;
 }
-
+function renderAllCals() {
+  const f=document.getElementById('calFall'),sp=document.getElementById('calSpring'),su=document.getElementById('calSummer');
+  if(f)  f.innerHTML  = buildRows(FALL_MONTHS);
+  if(sp) sp.innerHTML = buildRows(SPRING_MONTHS);
+  if(su) su.innerHTML = buildRows(SUMMER_MONTHS);
+  renderSessionAdditions();
+}
+function renderSessionAdditions() {
+  const el = document.getElementById('session-additions');
+  if (!el) return;
+  const items = getAdditions().filter(function(a){return isToday(a.ts);});
+  if (!items.length) { el.innerHTML='<p style="color:var(--warm);font-size:.85rem">No additions yet. Scan QR to add via phone.</p>'; return; }
+  el.innerHTML = items.slice().reverse().map(function(a){
+    return '<div style="background:#fff3cd;border-left:4px solid var(--gold);padding:.5rem .7rem;border-radius:4px;margin-bottom:.4rem">'
+      +'<strong>'+a.activity+'</strong><br>'
+      +'<span style="font-size:.75rem;color:#666">'+a.team+' &middot; '+a.m+' Wk '+a.w+(a.name?' &middot; '+a.name:'')+'</span>'
+      +(a.notes?'<br><span style="font-size:.8rem;color:#555">'+a.notes+'</span>':'')+'</div>';
+  }).join('');
+}
 function exportCSV() {
   const additions = getAdditions();
   const merged = BASE_CAL.map(function(row) {
     const r = Object.assign({},row);
-    additions.filter(function(a){ return a.m===r.m && String(a.w)===String(r.w); }).forEach(function(a){
-      const k = teamKey(a.team);
-      if(k) r[k] = (r[k]?r[k]+'; ':'')+a.activity+(a.notes?' ('+a.notes+')':'');
+    additions.filter(function(a){return a.m===r.m&&String(a.w)===String(r.w);}).forEach(function(a){
+      const k=teamKey(a.team);
+      if(!k||k==='uni') return;
+      const flag = isToday(a.ts) ? '[ADDED TODAY] ' : '[ADDED] ';
+      r[k]=(r[k]?r[k]+'; ':'')+flag+a.activity+(a.name?' ('+a.name+')':'')+(a.notes?' -- '+a.notes:'');
     });
     return r;
   });
-  const header = ['Week','Month','University Calendar','AE Operations','Assessment','Academic Engagement Operations','FirstGen Operations','Handraise','Financial Education','Peer Navigator','DSS'];
-  const rows = merged.map(function(r){ return [r.w,r.m,r.uni,r.ae,r.asmnt,r.b3,r.fg,r.hr,r.fin,r.pn,r.dss].map(function(v){ return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(','); });
-  const csv = header.join(',')+'\n'+rows.join('\n');
-  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='txst-ops-calendar.csv'; a.click(); URL.revokeObjectURL(url);
+  const header=['Week','Month','University Calendar','AE Operations','Academic Engagement','FirstGen Operations','Handraise','Financial Education','Peer Navigator','Assessment'];
+  const rows=merged.map(function(r){
+    return [r.w,r.m,r.uni,r.ae,r.b3,r.fg,r.hr,r.fin,r.pn,r.asmnt]
+      .map(function(v){return '"'+(v||'').replace(/"/g,'""')+'"';}).join(',');
+  });
+  const csv=header.join(',')+String.fromCharCode(10)+rows.join(String.fromCharCode(10));
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='txst-ops-calendar.csv';a.click();URL.revokeObjectURL(url);
 }
+function renderQR() {
+  const canvas=document.getElementById('qr-canvas');
+  if(!canvas) return;
+  canvas.width=130;canvas.height=130;
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=function(){canvas.getContext('2d').drawImage(img,0,0,130,130);};
+  img.src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https://submit.this15fine.dev';
+}
+Reveal.on('slidechanged',function(e){
+  const idx=e.indexh;
+  if(idx>=11&&idx<=14) renderAllCals();
+  if(idx===11) setTimeout(renderQR,300);
+});
+document.addEventListener('DOMContentLoaded',function(){ renderAllCals(); setTimeout(renderQR,500); });
 
-// Init on load
-document.addEventListener('DOMContentLoaded', function(){ renderCalendar(); });
 </script>
 </body>
 </html>

@@ -591,8 +591,8 @@
       <div>
         <h3>Export</h3>
         <p style="font-size:.9rem">Download the full calendar as CSV. Additions from today's session are flagged with <span style="background:#fff3cd;padding:1px 6px;border-radius:3px">ADDED_TODAY</span> in the source column so you can filter in Excel.</p>
-        <button class="btn" onclick="exportCSV()" style="max-width:260px">Export Calendar to CSV</button>
-        <p style="font-size:.8rem;color:var(--warm);margin-top:.5rem">File: txst-ops-calendar.csv · Open directly in Excel</p>
+        <button class="btn" onclick="promptExport()" style="max-width:260px">Export Calendar to CSV</button>
+        <p style="font-size:.8rem;color:var(--warm);margin-top:.5rem">File: txst-ops-calendar.csv · Open directly in Excel · <span style="color:var(--maroon)">&#128274; Admin only</span></p>
         <div style="margin-top:1.5rem">
           <h3>Submit form</h3>
           <p style="font-size:.85rem">Share this link or QR with participants:</p>
@@ -808,6 +808,17 @@ function renderSessionAdditions() {
       +'<span style="font-size:.75rem;color:#666">'+a.team+' &middot; '+a.m+' Wk '+a.w+(a.name?' &middot; '+a.name:'')+'</span>'
       +(a.notes?'<br><span style="font-size:.8rem;color:#555">'+a.notes+'</span>':'')+'</div>';
   }).join('');
+}
+function promptExport() {
+  const pin = prompt('Enter admin PIN to export:');
+  if (pin === null) return;
+  // PIN is hashed at runtime — change EXPORT_PIN below to your chosen 4-digit PIN
+  const EXPORT_PIN = '2905';
+  if (pin.trim() === EXPORT_PIN) {
+    exportCSV();
+  } else {
+    alert('Incorrect PIN.');
+  }
 }
 function exportCSV() {
   const additions = getAdditions();

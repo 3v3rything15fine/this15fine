@@ -1,0 +1,7 @@
+The web deck files are ready for zipping and deployment. The folder is:
+/data/documents/WorkshopSlides/WebDeck/RevealTXST_Wellness
+Includes:
+- index.html
+- css/
+- js/
+- README.md

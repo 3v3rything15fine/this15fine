@@ -1,0 +1,8 @@
+/* TXST Reveal.js deck styling */
+:root{ --txst-maroon:#501214; --txst-gold:#8d734a; --txst-cream:#f5f0e8; --txst-warm:#8a8d8f; }
+html,body{ height:100%; font-family: Arial, Helvetica, sans-serif; color:#222; background:var(--txst-cream); }
+.reveal{ height:100vh; }
+.section h1{ color:var(--txst-maroon); }
+.section h2{ color:var(--txst-maroon); }
+.accent{ color:var(--txst-gold); }
+.notebook{ border:2px dashed #bbb; height:240px; display:flex; align-items:center; justify-content:center; color:#666; }
